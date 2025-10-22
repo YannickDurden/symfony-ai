@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<main>
+    <h2>What's in the box?</h2>
+
+    <h3>Require</h3>
+    <ul>
+        {% for package_name, package_version in composer['require'] %}
+            <li>{{ package_name ~ ' '  ~ package_version }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Require Dev</h3>
+    <ul>
+        {% for package_name, package_version in composer['require-dev'] %}
+            <li>{{ package_name ~ ' '  ~ package_version }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Extra</h3>
+    <ul>
+        <li data-controller='hello'></li>
+        <li>Mercure</li>
+    </ul>
+</main>
+{% endblock %}
