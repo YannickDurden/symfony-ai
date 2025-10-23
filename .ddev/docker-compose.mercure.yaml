@@ -4,9 +4,9 @@ services:
   mercure:
     image: dunglas/mercure
     restart: unless-stopped
-    container_name: "ddev-${DDEV_SITENAME}-mercure"
+    container_name: "ddev-symfony-ai-mercure"
     labels:
-      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.site-name: symfony-ai
       com.ddev.approot: ${DDEV_APPROOT}
     expose:
       - "3000"
@@ -19,9 +19,9 @@ services:
       MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
       # Set the URL of your Symfony project (without trailing slash!) as value of the cors_origins directive
       MERCURE_EXTRA_DIRECTIVES: |
-        cors_origins https://ddev-symfony.ddev.site
+        cors_origins https://symfony-ai.ddev.site
     # Comment the following line to disable the development mode
-    command: /usr/bin/caddy run --config /etc/caddy/Caddyfile.dev
+    command: /usr/bin/caddy run --config /etc/caddy/dev.Caddyfile
     volumes:
       - mercure_data:/data
       - mercure_config:/config

@@ -13,4 +13,5 @@ return [
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\MercureBundle\MercureBundle::class => ['all' => true],
     Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
+    Symfony\AI\AiBundle\AiBundle::class => ['all' => true],
 ];

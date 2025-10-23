@@ -1,4 +1,4 @@
-name: ddev-symfony
+name: symfony-ai
 type: php
 docroot: public
 php_version: "8.3"
@@ -11,7 +11,9 @@ database:
     version: "16"
 use_dns_when_possible: true
 composer_version: "2"
-web_environment: []
+web_environment:
+  - CHROMADB_HOST=chromadb
+  - CHROMADB_PORT=8000
 
 # Key features of DDEV's config.yaml:
 
@@ -75,7 +77,7 @@ router_https_port: "443" # Port for https (defaults to global configuration, usu
 # Alternatively, an explicit Composer version may be specified, for example "2.2.18".
 # To reinstall Composer after the image was built, run "ddev debug refresh".
 
-nodejs_version: "latest"
+nodejs_version: "20"
 # change from the default system Node.js version to any other version.
 # Numeric version numbers can be complete (i.e. 18.15.0) or
 # incomplete (18, 17.2, 16). 'lts' and 'latest' can be used as well along with

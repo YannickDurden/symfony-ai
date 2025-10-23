@@ -1,0 +1,31 @@
+services:
+  chromadb:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: ddev-symfony-ai-chromadb
+    ports:
+      - "8000:8000"
+    #labels:
+    #  com.ddev.site-name: symfony-ai
+    #  com.ddev.approot: /Users/adimeo/Dev/symfony-ai
+    environment:
+      - CHROMA_DB_IMPL=duckdb+parquet
+      - PERSIST_DIRECTORY=/chroma/chroma
+      - ANONYMIZED_TELEMETRY=False
+    volumes:
+      - chromadb_data:/chroma/chroma
+    networks:
+      - ddev_default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v2/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  chromadb_data:
+    driver: local
+
+networks:
+  ddev_default:
+    external: true
+
