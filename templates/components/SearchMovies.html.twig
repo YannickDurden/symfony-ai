@@ -1,0 +1,180 @@
+<div{{ attributes.defaults({class: 'search-movies-component'}) }}>
+    <div class="search-form">
+        <h2>Recherche de films sci-fi</h2>
+
+        <div class="form-group">
+            <label for="question">Posez votre question :</label>
+            <input
+                type="text"
+                id="question"
+                data-model="question"
+                value="{{ question }}"
+                placeholder="Ex: Quels sont les meilleurs films de science-fiction ?"
+                class="form-control{% if _errors.has('question') %} is-invalid{% endif %}"
+                {% if isLoading %}disabled{% endif %}
+            >
+            {% if _errors.has('question') %}
+                <div class="invalid-feedback">
+                    {{ _errors.get('question')[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-action="live#action"
+                data-live-action-param="search"
+                {% if isLoading or question == '' %}disabled{% endif %}
+            >
+                {% if isLoading %}
+                    <span class="spinner"></span>
+                    Recherche en cours...
+                {% else %}
+                    Rechercher
+                {% endif %}
+            </button>
+
+            {% if answer != '' or question != '' %}
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-action="live#action"
+                    data-live-action-param="reset"
+                    {% if isLoading %}disabled{% endif %}
+                >
+                    Nouvelle recherche
+                </button>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if answer != '' %}
+        <div class="search-results">
+            <h3>Résultat :</h3>
+            <p class="answer">{{ answer|nl2br }}</p>
+        </div>
+    {% endif %}
+
+    <style>
+        .search-movies-component {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .search-form h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #545b62;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .search-results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+        }
+
+        .search-results h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            line-height: 1.6;
+            color: #555;
+            margin: 0;
+        }
+    </style>
+</div>
