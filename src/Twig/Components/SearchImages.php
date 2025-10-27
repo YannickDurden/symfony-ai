@@ -2,7 +2,8 @@
 
 namespace App\Twig\Components;
 
-use App\Service\Movies\MoviesSearch;
+use App\Entity\Image;
+use App\Service\Image\ImageSearch;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -10,33 +11,40 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\ValidatableComponentTrait;
 
-#[AsLiveComponent(template: 'components/SearchMovies.html.twig')]
-final class SearchMovies
+#[AsLiveComponent(template: 'components/SearchImages.html.twig')]
+final class SearchImages
 {
     use DefaultActionTrait;
     use ValidatableComponentTrait;
 
     #[LiveProp(writable: true)]
-    #[Assert\NotBlank(message: 'La question ne peut pas être vide.')]
-    public string $question = '';
+    #[Assert\NotBlank(message: 'La recherche ne peut pas être vide.')]
+    public string $query = '';
 
+    /** @var array<Image> */
     #[LiveProp]
-    public string $answer = '';
+    public array $images = [];
 
     #[LiveProp]
     public bool $isLoading = false;
 
+    #[LiveProp]
+    public bool $hasSearched = false;
+
     #[LiveAction]
-    public function search(MoviesSearch $moviesSearch): void
+    public function search(ImageSearch $imageSearch): void
     {
         $this->validate();
 
         $this->isLoading = true;
+        $this->hasSearched = false;
 
         try {
-            $this->answer = $moviesSearch->query($this->question);
+            $this->images = $imageSearch->query($this->query);
+            $this->hasSearched = true;
         } catch (\Throwable $e) {
-            $this->answer = 'Une erreur est survenue lors de la recherche. Veuillez réessayer.';
+            $this->images = [];
+            $this->hasSearched = true;
         } finally {
             $this->isLoading = false;
         }
@@ -45,9 +53,11 @@ final class SearchMovies
     #[LiveAction]
     public function reset(): void
     {
-        $this->question = '';
-        $this->answer = '';
+        $this->query = '';
+        $this->images = [];
         $this->isLoading = false;
+        $this->hasSearched = false;
         $this->clearValidation();
     }
 }
+

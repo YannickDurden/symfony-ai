@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Movies;
 
-use Codewithkyrian\ChromaDB\ChromaDB;
+use Symfony\Component\Uid\Uuid;
 use Codewithkyrian\ChromaDB\Factory;
-use Symfony\AI\Store\Bridge\ChromaDb\Store as ChromaStore;
 use Symfony\AI\Store\Document\Metadata;
 use Symfony\AI\Store\Document\TextDocument;
+use Symfony\AI\Store\Bridge\ChromaDb\Store as ChromaStore;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Uid\Uuid;
 
-readonly class RagStore
+readonly class MoviesStore
 {
     private ChromaStore $store;
 

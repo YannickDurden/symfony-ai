@@ -2,30 +2,30 @@
 
 namespace App\Command;
 
-use App\Service\RagStore;
-use App\Service\DocumentIndexer;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use App\Service\Movies\MoviesIndexer;
+use App\Service\Movies\MoviesStore;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(
     name: 'rag:index:movies',
     description: 'Index movies data into the vector store.',
 )]
-class RagIndexMoviesCommand extends Command
+class IndexMoviesCommand extends Command
 {
     public function __construct(
-        private readonly RagStore $store,
-        private readonly DocumentIndexer $documentIndexer,
-        #[Autowire('%kernel.project_dir%')] private string $rootDir,
+        private readonly MoviesStore $store,
+        private readonly MoviesIndexer $moviesIndexer,
+        #[Autowire('%kernel.project_dir%')] private readonly string $rootDir,
         #[Autowire(env: 'DATA_PATH')] private readonly string $dataPath,
     ){
         parent::__construct();
     }
-
+    
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -38,10 +38,10 @@ class RagIndexMoviesCommand extends Command
             return Command::FAILURE;
         }
 
-        $movies = json_decode(file_get_contents($filePath), true);
+        $movies = json_decode(file_get_contents($filePath), true, 512, JSON_THROW_ON_ERROR);
 
         $documents = $this->store->prepareDocuments($movies);
-        $this->documentIndexer->indexDocuments($documents);
+        $this->moviesIndexer->indexDocuments($documents);
 
         $io->success('Movies indexed!');
 

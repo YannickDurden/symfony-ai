@@ -1,15 +1,13 @@
 <div{{ attributes.defaults({class: 'search-movies-component'}) }}>
     <div class="search-form">
-        <h2>Recherche de films sci-fi</h2>
-
         <div class="form-group">
-            <label for="question">Posez votre question :</label>
+            <label for="question">Posez votre question sur les films de science-fiction</label>
             <input
                 type="text"
                 id="question"
                 data-model="question"
                 value="{{ question }}"
-                placeholder="Ex: Quels sont les meilleurs films de science-fiction ?"
+                placeholder="Ex: Quel film d'action avec Bruce Willis ? Recommande-moi un film spatial..."
                 class="form-control{% if _errors.has('question') %} is-invalid{% endif %}"
                 {% if isLoading %}disabled{% endif %}
             >
@@ -32,7 +30,7 @@
                     <span class="spinner"></span>
                     Recherche en cours...
                 {% else %}
-                    Rechercher
+                    🎬 Rechercher
                 {% endif %}
             </button>
 
@@ -44,7 +42,7 @@
                     data-live-action-param="reset"
                     {% if isLoading %}disabled{% endif %}
                 >
-                    Nouvelle recherche
+                    ↻ Nouvelle recherche
                 </button>
             {% endif %}
         </div>
@@ -52,22 +50,29 @@
 
     {% if answer != '' %}
         <div class="search-results">
-            <h3>Résultat :</h3>
-            <p class="answer">{{ answer|nl2br }}</p>
+            <div class="results-header">
+                <h3>🎯 Réponse de l'IA</h3>
+            </div>
+            <div class="answer-content">
+                <p class="answer">{{ answer|nl2br }}</p>
+            </div>
         </div>
     {% endif %}
 
     <style>
         .search-movies-component {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        .search-form h2 {
-            color: #333;
-            margin-bottom: 20px;
+        .search-form {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
         .form-group {
@@ -77,81 +82,88 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
-            color: #555;
+            font-weight: 600;
+            color: #262626;
+            font-size: 16px;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            padding: 14px 16px;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+            box-sizing: border-box;
         }
 
         .form-control:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #0095f6;
+            box-shadow: 0 0 0 3px rgba(0, 149, 246, 0.1);
         }
 
         .form-control.is-invalid {
-            border-color: #dc3545;
+            border-color: #ed4956;
         }
 
         .invalid-feedback {
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 5px;
+            color: #ed4956;
+            font-size: 13px;
+            margin-top: 6px;
         }
 
         .form-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
         }
 
         .btn {
             padding: 12px 24px;
             border: none;
-            border-radius: 4px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
 
         .btn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
         .btn-primary {
-            background-color: #007bff;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
             color: white;
         }
 
         .btn-primary:hover:not(:disabled) {
-            background-color: #0056b3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(188, 24, 136, 0.3);
         }
 
         .btn-secondary {
-            background-color: #6c757d;
-            color: white;
+            background-color: #fafafa;
+            color: #262626;
+            border: 1px solid #dbdbdb;
         }
 
         .btn-secondary:hover:not(:disabled) {
-            background-color: #545b62;
+            background-color: #f0f0f0;
         }
 
         .spinner {
             width: 16px;
             height: 16px;
-            border: 2px solid transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
@@ -159,22 +171,45 @@
         }
 
         .search-results {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-            border-left: 4px solid #007bff;
+            animation: fadeIn 0.3s ease-in;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        .search-results h3 {
-            color: #333;
-            margin-bottom: 15px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 24px;
+            border-bottom: 1px solid #dbdbdb;
+        }
+
+        .results-header h3 {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .answer-content {
+            padding: 24px;
         }
 
         .answer {
-            line-height: 1.6;
-            color: #555;
+            line-height: 1.8;
+            color: #262626;
             margin: 0;
+            font-size: 15px;
+            white-space: pre-wrap;
+        }
+
+        .answer::first-line {
+            font-weight: 500;
         }
     </style>
 </div>
