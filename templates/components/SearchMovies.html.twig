@@ -54,7 +54,7 @@
                 <h3>🎯 Réponse de l'IA</h3>
             </div>
             <div class="answer-content">
-                <p class="answer">{{ answer|nl2br }}</p>
+                <p class="answer">{{ answer|markdown_to_html|raw }}</p>
             </div>
         </div>
     {% endif %}

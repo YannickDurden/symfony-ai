@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Images;
 
 use App\Service\Image\ImageAnalyzer;
 use Symfony\AI\Platform\Exception\ExceptionInterface;
@@ -45,12 +45,12 @@ class TestImageAnalyzerCommand extends Command
 
         try {
             $io->section('Envoi de l\'image à GPT-4...');
-            
+
             $description = $this->imageAnalyzer->analyze($imagePath);
 
             $io->success('Image analysée avec succès !');
             $io->newLine();
-            
+
             $io->section('Description générée :');
             $io->writeln($description);
             $io->newLine();

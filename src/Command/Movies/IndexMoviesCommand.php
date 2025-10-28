@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Movies;
 
 use App\Service\Movies\MoviesIndexer;
 use App\Service\Movies\MoviesStore;
@@ -25,7 +25,7 @@ class IndexMoviesCommand extends Command
     ){
         parent::__construct();
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

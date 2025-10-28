@@ -23,6 +23,12 @@ class HomeController extends AbstractController
         return $this->render('home/images.html.twig');
     }
 
+    #[Route(path: '/documentation', name: 'app_documentation', methods: ['GET'])]
+    public function searchDocumentation(): Response
+    {
+        return $this->render('home/documentation.html.twig');
+    }
+
     #[Route(path: '/image/{id}', name: 'app_image_show', methods: ['GET'])]
     public function showImage(int $id, ImageRepository $imageRepository): Response
     {

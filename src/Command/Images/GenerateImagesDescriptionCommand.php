@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Images;
 
 use App\Entity\Image;
 use App\Repository\ImageRepository;
